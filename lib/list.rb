@@ -1,4 +1,7 @@
 class List
+  require_relative 'holdings'
+  require_relative 'stats'
+  
   require 'bundler/setup'
   require 'active_sierra_models'
   require 'axlsx'
@@ -6,6 +9,7 @@ class List
   def initialize(orders)
     @order_views = orders
     @holdings = Holdings
+    @usage = Stats
   end
 
   def worksheet
@@ -45,6 +49,7 @@ class List
       { issn1: issn_scan(order_view)[0] },
       { issn2: issn_scan(order_view)[1] },
       { online_access: holdings_array(order_view).join("\n") },
+      { usage: usage_array(order_view).join("\n") },
       { format: order_view.material_type_code },
       { fund: order_view.order_record_cmf.fund },
       { selector: selector_map(order_view.order_record_cmf.fund) },
@@ -72,6 +77,25 @@ class List
     return [issns[0], issns[1]] if issns.length == 2
     return [issns[0], nil ] if issns.length == 1
     [ nil , nil ]
+  end
+
+  def usage_array(order_view)
+    usage_info = []
+    issn_scan(order_view).each { |issn| next if issn.nil?;  title_holdings.concat(usage_for(issn)) }
+    usage_info.uniq
+  end
+  
+  def usage_for(issn)
+    usage_text = []
+    @usage.where(issn: issn).each do |usage| 
+      next if usage.nil?
+      usage_text.push("#{usage.publisher}-#{usage.platform} | #{usage.total}")
+    end
+    @usage.where(eissn: issn).each do |usage|
+      next if usage.nil?
+      usage_text.push("#{usage.publisher}-#{usage.platform} | #{usage.total}")
+    end
+    usage_text
   end
 
   def holdings_array(order_view)
