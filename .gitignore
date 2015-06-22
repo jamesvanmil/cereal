@@ -1,4 +1,5 @@
 config/database.yml
 Gemfile.lock
+usage/
 *.db
 *.csv

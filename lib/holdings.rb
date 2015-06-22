@@ -10,6 +10,8 @@
 =end
 
 class Holdings < ActiveRecord::Base
+  require 'active_record'
+
   ActiveRecord::Base.establish_connection(
     :adapter => "sqlite3",
     :database  => "holdings.db"
