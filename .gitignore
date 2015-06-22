@@ -1,5 +1,7 @@
 config/database.yml
 Gemfile.lock
 usage/
+*.xlsx
+*.xls
 *.db
 *.csv

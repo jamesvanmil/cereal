@@ -1,11 +1,9 @@
-class List
-  require_relative 'holdings'
-  require_relative 'stats'
-  
-  require 'bundler/setup'
-  require 'active_sierra_models'
-  require 'axlsx'
+require 'bundler/setup'
+require 'active_sierra_models'
+require 'active_record'
+require 'axlsx'
 
+class List
   def initialize(orders)
     @order_views = orders
     @holdings = Holdings
@@ -81,19 +79,19 @@ class List
 
   def usage_array(order_view)
     usage_info = []
-    issn_scan(order_view).each { |issn| next if issn.nil?;  title_holdings.concat(usage_for(issn)) }
+    issn_scan(order_view).each { |issn| next if issn.nil?;  usage_info.concat(usage_for(issn)) }
     usage_info.uniq
   end
   
   def usage_for(issn)
     usage_text = []
-    @usage.where(issn: issn).each do |usage| 
-      next if usage.nil?
-      usage_text.push("#{usage.publisher}-#{usage.platform} | #{usage.total}")
+    @usage.where(issn: issn).each do |use| 
+      next if use.nil?
+      usage_text.push("#{use.publisher}-#{use.platform} | #{use.total}")
     end
-    @usage.where(eissn: issn).each do |usage|
-      next if usage.nil?
-      usage_text.push("#{usage.publisher}-#{usage.platform} | #{usage.total}")
+    @usage.where(eissn: issn).each do |use|
+      next if use.nil?
+      usage_text.push("#{use.publisher}-#{use.platform} | #{use.total}")
     end
     usage_text
   end
@@ -132,4 +130,38 @@ class List
     payment_records = order_view.order_record_paids.where(paid_date_gmt: fiscal_year_begin..fiscal_year_end)
     (payment_records.collect { |payment| payment.paid_amount }).reduce(:+)
   end
+end
+
+=begin
+  Create the database thusly:
+
+  $ sqlite3 cereal.db
+  sqlite> create table holdings ( resourcetype text, title text, issn text,eissn text, startdate text, enddate text, resource text, url text);
+  sqlite> .separator ","
+  sqlite> .import journal_holdings.csv holdings
+  sqlite> .quit
+=end
+
+class Holdings < ActiveRecord::Base
+  ActiveRecord::Base.establish_connection(
+    :adapter => "sqlite3",
+    :database  => "cereal.db"
+  )
+end
+
+=begin
+  Create the database thusly:
+
+  $ sqlite3 cereal.db
+  sqlite> create table stats ( title text, publisher text, platform text, issn text, eissn text, total text);
+  sqlite> .separator "\t"
+  sqlite> .import usage/JR1_master_2014.csv stats
+  sqlite> .quit
+=end
+
+class Stats < ActiveRecord::Base
+  ActiveRecord::Base.establish_connection(
+    :adapter => "sqlite3",
+    :database  => "cereal.db"
+  )
 end
