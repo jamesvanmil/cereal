@@ -39,7 +39,7 @@ module SerialList
     ["u", "h"]
   end
 
-  def self.all_fund_list(fund_array = YAML::load(File.open('script_configuration.yml'))["funds"])
+  def self.all_fund_list(fund_array = YAML::load(File.open('config/script_configuration.yml'))["serial_funds"])
     ## Returns all funds unless another array is passed
     fund_array
   end
