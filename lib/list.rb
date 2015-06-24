@@ -1,8 +1,11 @@
-require 'bundler/setup'
-require 'active_sierra_models'
-require 'active_record'
-require 'axlsx'
-require 'yaml'
+require "bundler/setup"
+require "active_sierra_models"
+require "active_record"
+require "axlsx"
+require "yaml"
+
+require_relative "stats"
+require_relative "holdings"
 
 class List
 
@@ -20,7 +23,7 @@ class List
         add_header(sheet)
         add_rows(sheet)
       end
-      p.serialize('example.xlsx')
+      p.serialize("example.xlsx")
     end
   end
 
@@ -133,36 +136,3 @@ class List
   end
 end
 
-=begin
-  Create the database thusly:
-
-  $ sqlite3 cereal.db
-  sqlite> create table holdings ( resourcetype text, title text, issn text,eissn text, startdate text, enddate text, resource text, url text);
-  sqlite> .separator ","
-  sqlite> .import journal_holdings.csv holdings
-  sqlite> .quit
-=end
-
-class Holdings < ActiveRecord::Base
-  ActiveRecord::Base.establish_connection(
-    :adapter => "sqlite3",
-    :database  => "cereal.db"
-  )
-end
-
-=begin
-  Create the database thusly:
-
-  $ sqlite3 cereal.db
-  sqlite> create table stats ( title text, publisher text, platform text, issn text, eissn text, total text);
-  sqlite> .separator "\t"
-  sqlite> .import usage/JR1_master_2014.csv stats
-  sqlite> .quit
-=end
-
-class Stats < ActiveRecord::Base
-  ActiveRecord::Base.establish_connection(
-    :adapter => "sqlite3",
-    :database  => "cereal.db"
-  )
-end
