@@ -13,4 +13,20 @@ class Holdings < ActiveRecord::Base
     :adapter => "sqlite3",
     :database  => "cereal.db"
   )
+
+  def self.holdings_for(issns)
+    @holdings = []
+    issns.each { |issn| get_holdings(issn) }
+    @holdings.uniq
+  end
+
+  def self.get_holdings(issn)
+    Holdings.where(issn: issn).each do |holding|
+      @holdings << "#{holding.startdate}-#{holding.enddate} | #{holding.resource}"
+    end
+
+    Holdings.where(eissn: issn).each do |holding|
+      @holdings << "#{holding.startdate}-#{holding.enddate} | #{holding.resource}"
+    end
+  end
 end

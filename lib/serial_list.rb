@@ -10,7 +10,8 @@ module SerialList
     OrderView.where(
       order_status_code: serial_status_codes,
       ocode1: ["u", "h"] ## Jurisdiction 
-    )
+    ).includes(:record_metadata).where(
+      "record_metadata.deletion_date_gmt" => nil).limit(100)
   end
 
   def self.get_codes_from_funds
@@ -24,7 +25,8 @@ module SerialList
       order_record_cmf: { fund_code: get_codes_from_funds }).where(
       order_status_code: monograph_status_codes,
       ocode1: jurisdiction_codes
-    )
+    ).includes(:record_metadata).where(
+      "record_metadata.deletion_date_gmt" => nil).limit(100)
   end
 
   def self.serial_status_codes

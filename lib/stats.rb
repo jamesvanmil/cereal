@@ -13,4 +13,20 @@ class Stats < ActiveRecord::Base
     :adapter => "sqlite3",
     :database  => "cereal.db"
   )
+
+  def self.usage_for(issns)
+    @usage = []
+    issns.each { |issn| get_usage(issn) }
+    @usage.uniq
+  end
+
+  def self.get_usage(issn)
+    Stats.where(issn: issn).each do |use|
+      @usage << "#{use.publisher}: #{use.platform} | #{use.total}"
+    end
+
+    Stats.where(eissn: issn).each do |use|
+      @usage << "#{use.publisher}: #{use.platform} | #{use.total}"
+    end
+  end
 end
