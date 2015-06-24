@@ -10,8 +10,8 @@
 
 class Stats < ActiveRecord::Base
   ActiveRecord::Base.establish_connection(
-    :adapter => "sqlite3",
-    :database  => "cereal.db"
+    adapter: 'sqlite3',
+    database: 'cereal.db'
   )
 
   def self.usage_for(issns)

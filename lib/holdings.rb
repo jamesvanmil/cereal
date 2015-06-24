@@ -10,8 +10,8 @@
 
 class Holdings < ActiveRecord::Base
   ActiveRecord::Base.establish_connection(
-    :adapter => "sqlite3",
-    :database  => "cereal.db"
+    adapter: 'sqlite3',
+    database: 'cereal.db'
   )
 
   def self.holdings_for(issns)
@@ -21,12 +21,12 @@ class Holdings < ActiveRecord::Base
   end
 
   def self.get_holdings(issn)
-    Holdings.where(issn: issn).each do |holding|
-      @holdings << "#{holding.startdate}-#{holding.enddate} | #{holding.resource}"
+    Holdings.where(issn: issn).each do |h|
+      @holdings << "#{h.startdate}-#{h.enddate} | #{h.resource}"
     end
 
-    Holdings.where(eissn: issn).each do |holding|
-      @holdings << "#{holding.startdate}-#{holding.enddate} | #{holding.resource}"
+    Holdings.where(eissn: issn).each do |h|
+      @holdings << "#{h.startdate}-#{h.enddate} | #{h.resource}"
     end
   end
 end

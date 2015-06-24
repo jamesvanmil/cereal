@@ -11,22 +11,22 @@ require_relative 'stats'
 
 class Titles < ActiveRecord::Base
   ActiveRecord::Base.establish_connection(
-    :adapter => "sqlite3",
-    :database  => "cereal.db"
+    adapter: 'sqlite3',
+    database: 'cereal.db'
   )
 
-  def set_base_fields(order_view)
+  def assign_base_fields(order_view)
     @bib_view ||= order_view.bib_view
     self.order_number = "o#{order_view.record_num}a"
     self.title = order_view.bib_view.title
     self.issn1 = issn_scan(order_view)[0]
     self.issn2 = issn_scan(order_view)[1]
     self.format = order_view.material_type_code
-    self.fund = order_view.order_record_cmf.fund  
+    self.fund = order_view.order_record_cmf.fund
     self.selector = selector_map(order_view.order_record_cmf.fund)
     self.vendor = order_view.vendor_record_code
     self.acqusition_type = order_view.acq_type_code
-    self.split = order_view.receiving_action_code == "p"
+    self.split = order_view.receiving_action_code == 'p'
     self.fyminus0 = payment_total_for_fiscal_year(0, order_view)
     self.fyminus1 = payment_total_for_fiscal_year(1, order_view)
     self.fyminus2 = payment_total_for_fiscal_year(2, order_view)
@@ -34,12 +34,12 @@ class Titles < ActiveRecord::Base
     self.fyminus4 = payment_total_for_fiscal_year(4, order_view)
   end
 
-  def set_online_access
-    holdings = Holdings.holdings_for(issns) 
+  def assign_online_access
+    holdings = Holdings.holdings_for(issns)
     self.online_access = holdings.join("\n")  unless holdings.nil?
   end
 
-  def set_usage
+  def assign_usage
     usage = Stats.usage_for(issns)
     self.usage = usage.join("\n")
   end
@@ -51,24 +51,27 @@ class Titles < ActiveRecord::Base
   private
 
   def selector_map(fund)
-    @@selectors_by_fund ||= YAML.load(File.read("config/script_configuration.yml"))["selectors_by_fund"]
+    @@selectors_by_fund ||= YAML.load(
+      File.read('config/script_configuration.yml')
+      )['selectors_by_fund']
     @@selectors_by_fund[fund]
   end
 
-  def issn_scan(order_view) 
-    issn_marc_field = @bib_view.varfield_views.marc_tag("022")
-    return [ nil , nil ] if issn_marc_field.empty?
+  def issn_scan
+    issn_marc_field = @bib_view.varfield_views.marc_tag('022')
+    return [nil, nil] if issn_marc_field.empty?
     issns = issn_marc_field.first.field_content.scan(/\d\d\d\d-\d\d\d[\dXx]/)
     return [issns[0], issns[1]] if issns.length == 2
-    return [issns[0], nil ] if issns.length == 1
-    [ nil , nil ]
+    return [issns[0], nil] if issns.length == 1
+    [nil, nil]
   end
 
   def payment_total_for_fiscal_year(offset, order_view)
     year = fiscal_year(offset)
-    fiscal_year_begin = Date.new(year - 1,7,1)
-    fiscal_year_end = Date.new(year,6,30)
-    payment_records = order_view.order_record_paids.where(paid_date_gmt: fiscal_year_begin..fiscal_year_end)
+    fiscal_year_begin = Date.new(year - 1, 7, 1)
+    fiscal_year_end = Date.new(year, 6, 30)
+    payment_records = order_view.order_record_paids.where(
+      paid_date_gmt: fiscal_year_begin..fiscal_year_end)
     (payment_records.collect { |payment| payment.paid_amount }).reduce(:+)
   end
 
@@ -77,6 +80,6 @@ class Titles < ActiveRecord::Base
     todays_month = Date.today.month
     todays_year = Date.today.year - offset
     return todays_year unless todays_month > 6
-    return today_year + 1
+    today_year + 1
   end
 end
