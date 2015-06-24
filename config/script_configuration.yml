@@ -95,14 +95,12 @@ selectors_by_fund:
     wrref: "Admin",
     xcjgs: "Admin",
     ynedt: "Admin",
+    sgper: "Admin",
 
     sfren: "Arlene",
-    sgper: "Arlene",
     slang: "Arlene",
-    sprof: "Arlene",
     sspan: "Arlene",
     ufren: "Arlene",
-    uprof: "Arlene",
     uspan: "Arlene",
     vfaux: "Arlene",
     yhfru: "Arlene",
@@ -145,17 +143,15 @@ selectors_by_fund:
     csoc: "Clermont",
     csref: "Clermont",
 
+    sprof: "Debbie",
+    uprof: "Debbie",
     slref: "Debbie",
     ulref: "Debbie",
 
     senvi: "Holly",
     sgeog: "Holly",
     sgeol: "Holly",
-    smath: "Holly",
-    sphys: "Holly",
     ugeol: "Holly",
-    umath: "Holly",
-    uphys: "Holly",
     ybalu: "Holly",
     yrich: "Holly",
 
@@ -172,6 +168,9 @@ selectors_by_fund:
     sdaap: "Jen",
     udaap: "Jen",
     xcars: "Jen",
+
+    smath: "Jim",
+    umath: "Jim",
 
     yells: "Jim Cummins",
 
@@ -313,6 +312,8 @@ selectors_by_fund:
     yurbs: "Sally",
     yurbu: "Sally",
 
+    uphys: "Ted",
+    sphys: "Ted",
     ncomp: "Ted",
     scas: "Ted",
     scomp: "Ted",
