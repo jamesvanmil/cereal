@@ -47,7 +47,7 @@ class List
       { issn2: title.issn2 },
       { online_access: title.online_access },
       { usage: title.usage },
-      { format: title.format },
+      { format: mapped_format(title.format) },
       { fund: title.fund },
       { selector: title.selector },
       { vendor: title.vendor },
@@ -59,6 +59,22 @@ class List
       { "FY#{fiscal_year(3)}".to_s => title.fyminus3 },
       { "FY#{fiscal_year(4)}".to_s => title.fyminus4 }
     ]
+  end
+
+  def mapped_format(code)
+    case code
+    when 'e' then 'electronic'
+    when 'u' then 'print'
+    when 'w' then 'score'
+    else code 
+    end
+  end
+
+  def mapped_acqusition_type(code)
+    case code
+    when 'p' then 'purchase'
+    else code 
+    end
   end
 
   def fiscal_year(offset)

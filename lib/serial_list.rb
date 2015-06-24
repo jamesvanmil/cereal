@@ -11,7 +11,8 @@ module SerialList
       order_status_code: serial_status_codes,
       ocode1: jurisdiction_codes
     ).includes(:record_metadata).where(
-      'record_metadata.deletion_date_gmt' => nil).limit(100)
+      'record_metadata.deletion_date_gmt' => nil)
+    #.limit(100)
   end
 
   def self.codes_from_funds
@@ -32,7 +33,8 @@ module SerialList
       order_status_code: monograph_status_codes,
       ocode1: jurisdiction_codes
     ).includes(:record_metadata).where(
-      'record_metadata.deletion_date_gmt' => nil).limit(100)
+      'record_metadata.deletion_date_gmt' => nil)
+    #.limit(100)
   end
 
   def self.serial_status_codes
@@ -48,6 +50,6 @@ module SerialList
   end
 
   def self.all_fund_list
-    YAML::load(File.open('config/script_configuration.yml'))['serial_funds'])
+    (YAML::load(File.open('config/script_configuration.yml')))['serial_funds']
   end
 end

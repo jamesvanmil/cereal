@@ -19,8 +19,8 @@ class Titles < ActiveRecord::Base
     @bib_view ||= order_view.bib_view
     self.order_number = "o#{order_view.record_num}a"
     self.title = order_view.bib_view.title
-    self.issn1 = issn_scan(order_view)[0]
-    self.issn2 = issn_scan(order_view)[1]
+    self.issn1 = issn_scan[0]
+    self.issn2 = issn_scan[1]
     self.format = order_view.material_type_code
     self.fund = order_view.order_record_cmf.fund
     self.selector = selector_map(order_view.order_record_cmf.fund)
