@@ -25,9 +25,10 @@ class List
     sheet.add_row(spreadsheet_keys(@titles.first))
   end
 
-  def add_rows(sheet)
+  def add_rows(sheet, index = 2)
     @titles.each do |title|
-      sheet.add_row(spreadsheet_values(title))
+      sheet.add_row(spreadsheet_values(title, index))
+      index += 1
     end
   end
 
@@ -35,29 +36,32 @@ class List
     spreadsheet_mapping(title).collect { |row| row.keys[0] }
   end
 
-  def spreadsheet_values(title)
-    spreadsheet_mapping(title).collect { |row| row.values[0] }
+  def spreadsheet_values(title, index)
+    spreadsheet_mapping(title, index).collect { |row| row.values[0] }
   end
 
-  def spreadsheet_mapping(title)
+  def spreadsheet_mapping(title, index = nil)
     [
-      { order_number: title.order_number },
-      { vendor: title.vendor },
-      { acqusition_type: mapped_acqusition_type(title.acqusition_type) },
-      { split: title.split },
-      { fund: title.fund },
-      { selector: selector_map(title.fund) },
-      { format: mapped_format(title.format) },
-      { title: title.title },
-      { issn1: title.issn1 },
-      { issn2: title.issn2 },
-      { online_access: title.online_access },
-      { usage: title.usage },
-      { "FY#{fiscal_year(0)}".to_s => title.fyminus0 },
-      { "FY#{fiscal_year(1)}".to_s => title.fyminus1 },
-      { "FY#{fiscal_year(2)}".to_s => title.fyminus2 },
-      { "FY#{fiscal_year(3)}".to_s => title.fyminus3 },
-      { "FY#{fiscal_year(4)}".to_s => title.fyminus4 }
+      { order_number: title.order_number }, #A
+      { vendor: title.vendor }, #B
+      { acqusition_type: mapped_acqusition_type(title.acqusition_type) }, #C
+      { split: title.split }, #D
+      { fund: title.fund }, #E
+      { selector: selector_map(title.fund) }, #F
+      { format: mapped_format(title.format) }, #G
+      { title: title.title }, #H
+      { issn1: title.issn1 }, #I
+      { issn2: title.issn2 }, #J
+      { notes: '' }, #K
+      { online_access: title.online_access }, #L
+      { usage: title.usage }, #M
+      { cost_count: '' }, #N
+      { cost_per_use: "=Q#{index}/N#{index}" }, #O
+      { "FY#{fiscal_year(0)}".to_s => title.fyminus0 }, #P
+      { "FY#{fiscal_year(1)}".to_s => title.fyminus1 }, #Q
+      { "FY#{fiscal_year(2)}".to_s => title.fyminus2 }, #R
+      { "FY#{fiscal_year(3)}".to_s => title.fyminus3 }, #S
+      { "FY#{fiscal_year(4)}".to_s => title.fyminus4 } #T
     ]
   end
 
