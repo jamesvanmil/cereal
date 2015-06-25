@@ -46,7 +46,7 @@ class List
       { acqusition_type: mapped_acqusition_type(title.acqusition_type) },
       { split: title.split },
       { fund: title.fund },
-      { selector: title.selector },
+      { selector: selector_map(title.fund) },
       { format: mapped_format(title.format) },
       { title: title.title },
       { issn1: title.issn1 },
@@ -59,6 +59,13 @@ class List
       { "FY#{fiscal_year(3)}".to_s => title.fyminus3 },
       { "FY#{fiscal_year(4)}".to_s => title.fyminus4 }
     ]
+  end
+
+  def selector_map(fund)
+    @selectors_by_fund ||= YAML.load(
+      File.read('config/script_configuration.yml')
+      )['selectors_by_fund']
+    @selectors_by_fund[fund]
   end
 
   def mapped_format(code)

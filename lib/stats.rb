@@ -7,6 +7,7 @@
   sqlite> .import usage/JR1_master_2014.csv stats
   sqlite> .quit
 =end
+require 'active_record'
 
 class Stats < ActiveRecord::Base
   ActiveRecord::Base.establish_connection(

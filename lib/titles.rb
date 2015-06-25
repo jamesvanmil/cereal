@@ -2,7 +2,7 @@
   Create the database thusly:
 
   $ sqlite3 cereal.db
-  sqlite> create table titles ( id integer primary key, order_number text, title text, issn1 text, issn2 text, online_access text, usage text, format text, fund text, selector text, vendor text, acqusition_type, text, split text, fyminus0 text, fyminus1 text,  fyminus2 text,  fyminus3 text,  fyminus4 text )
+  sqlite> create table titles ( id integer primary key, order_number text, title text, issn1 text, issn2 text, online_access text, usage text, format text, fund text, vendor text, acqusition_type, text, split text, fyminus0 text, fyminus1 text,  fyminus2 text,  fyminus3 text,  fyminus4 text )
   sqlite> .quit
 =end
 
@@ -23,7 +23,6 @@ class Titles < ActiveRecord::Base
     self.issn2 = issn_scan[1]
     self.format = order_view.material_type_code
     self.fund = order_view.order_record_cmf.fund
-    self.selector = selector_map(order_view.order_record_cmf.fund)
     self.vendor = order_view.vendor_record_code
     self.acqusition_type = order_view.acq_type_code
     self.split = order_view.receiving_action_code == 'p'
@@ -49,13 +48,6 @@ class Titles < ActiveRecord::Base
   end
 
   private
-
-  def selector_map(fund)
-    @@selectors_by_fund ||= YAML.load(
-      File.read('config/script_configuration.yml')
-      )['selectors_by_fund']
-    @@selectors_by_fund[fund]
-  end
 
   def issn_scan
     issn_marc_field = @bib_view.varfield_views.marc_tag('022')

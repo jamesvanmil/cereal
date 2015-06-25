@@ -8,6 +8,8 @@
   sqlite> .quit
 =end
 
+require 'active_record'
+
 class Holdings < ActiveRecord::Base
   ActiveRecord::Base.establish_connection(
     adapter: 'sqlite3',
