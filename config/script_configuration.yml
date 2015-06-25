@@ -203,8 +203,10 @@ selectors_by_fund:
 
     halhm: "Leslie",
     halhs: "Leslie",
+    hchil: "Leslie",
     hhbea: "Leslie",
     hhda: "Leslie",
+    hhdad: "Leslie",
     hhgbd: "Leslie",
     hhgif: "Leslie",
     hhgm: "Leslie",
@@ -238,6 +240,7 @@ selectors_by_fund:
     hphd: "Leslie",
     hphs: "Leslie",
     hrepl: "Leslie",
+    huchm: "Leslie",
     hygs: "Leslie",
     hyss: "Leslie",
     nbiol: "Leslie",
