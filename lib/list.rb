@@ -93,6 +93,7 @@ class List
     case code
     when 'b' then 'prepaid'
     when 'c' then 'comes with'
+    when 'g' then 'gift'
     when 'p' then 'purchase'
     else code 
     end
