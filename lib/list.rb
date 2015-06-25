@@ -13,23 +13,39 @@ class List
       ## This supports line breaks, per discussion here: 
       ## https://github.com/randym/axlsx/issues/252
       p.use_shared_strings = true
-      p.workbook.add_worksheet(name: 'Serial_orders') do |sheet|
-        add_header(sheet)
-        add_rows(sheet)
-      end
+      prepare_worksheets(p)
+      add_header
+      add_rows
       p.serialize('example.xlsx')
     end
   end
 
-  def add_header(sheet)
-    sheet.add_row(spreadsheet_keys(@titles.first))
+  def prepare_worksheets(p)
+    @master_worksheet = p.workbook.add_worksheet(name: 'master')
+    @selector_worksheets = {}
+    selectors.collect do |selector|
+      @selector_worksheets[selector] = p.workbook.add_worksheet(name: selector)
+    end
   end
 
-  def add_rows(sheet, index = 2)
+  def add_header
+    @master_worksheet << spreadsheet_keys(@titles.first)
+    @selector_worksheets.values.each do |sheet|
+      sheet << spreadsheet_keys(@titles.first)
+    end
+  end
+
+  def add_rows(index = 2)
     @titles.each do |title|
-      sheet.add_row(spreadsheet_values(title, index))
+      row = prepare_row(title, index)
+      @master_worksheet << row
+      @selector_worksheets[row[5]] << row unless row[5].nil?
       index += 1
     end
+  end
+
+  def prepare_row(title, index)
+    spreadsheet_values(title, index)
   end
 
   def spreadsheet_keys(title)
@@ -70,6 +86,12 @@ class List
       File.read('config/script_configuration.yml')
       )['selectors_by_fund']
     @selectors_by_fund[fund]
+  end
+
+  def selectors
+    YAML.load(
+      File.read('config/script_configuration.yml')
+      )['selectors_by_fund'].values.uniq
   end
 
   def mapped_format(code)
