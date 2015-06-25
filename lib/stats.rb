@@ -23,11 +23,11 @@ class Stats < ActiveRecord::Base
 
   def self.get_usage(issn)
     Stats.where(issn: issn).each do |use|
-      @usage << "#{use.publisher}: #{use.platform} | #{use.total}"
+      @usage << "#{use.platform}: #{use.total}"
     end
 
     Stats.where(eissn: issn).each do |use|
-      @usage << "#{use.publisher}: #{use.platform} | #{use.total}"
+      @usage << "#{use.platform}: #{use.total}"
     end
   end
 end
