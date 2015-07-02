@@ -105,6 +105,7 @@ selectors_by_fund:
     vfaux: "Arlene",
     yhfru: "Arlene",
     ysivt: "Arlene",
+    vlabs: "Arlene",
 
     ssocw: "Charlie",
 
@@ -306,7 +307,6 @@ selectors_by_fund:
     upols: "Sally",
     uwoms: "Sally",
     vjuda: "Sally",
-    vlabs: "Sally",
     yflou: "Sally",
     ylecs: "Sally",
     ylecu: "Sally",
