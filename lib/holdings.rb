@@ -4,7 +4,7 @@
   $ sqlite3 cereal.db
   sqlite> create table holdings ( resourcetype text, title text, issn text,eissn text, startdate text, enddate text, resource text, url text);
   sqlite> .separator ","
-  sqlite> .import journal_holdings.csv holdings
+  sqlite> .import journal_holdings_2014-01-01.csv holdings
   sqlite> .quit
 =end
 

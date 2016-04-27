@@ -2,7 +2,7 @@
   Create the database thusly:
 
   $ sqlite3 cereal.db
-  sqlite> create table titles ( id integer primary key, order_number text, title text, issn1 text, issn2 text, online_access text, usage text, format text, fund text, vendor text, acqusition_type, text, split text, fyminus0 text, fyminus1 text,  fyminus2 text,  fyminus3 text,  fyminus4 text )
+  sqlite> create table titles ( id integer primary key, order_number text, title text, issn1 text, issn2 text, online_access text, usage text, format text, fund text, vendor text, acqusition_type, text, split text, fyminus0 text, fyminus1 text,  fyminus2 text,  fyminus3 text,  fyminus4 text );
   sqlite> .quit
 =end
 
