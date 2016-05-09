@@ -12,7 +12,7 @@ module SerialList
       ocode1: jurisdiction_codes
     ).includes(:record_metadata).where(
       'record_metadata.deletion_date_gmt' => nil)
-    #.limit(100)
+    .limit(10)
   end
 
   def self.codes_from_funds
@@ -34,7 +34,7 @@ module SerialList
       ocode1: jurisdiction_codes
     ).includes(:record_metadata).where(
       'record_metadata.deletion_date_gmt' => nil)
-    #.limit(100)
+    .limit(10)
   end
 
   def self.serial_status_codes

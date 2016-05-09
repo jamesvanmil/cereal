@@ -1,5 +1,6 @@
 require 'bundler/setup'
 require 'axlsx'
+require 'byebug'
 
 require_relative 'titles'
 
@@ -39,9 +40,16 @@ class List
     @titles.each do |title|
       row = prepare_row(title, index)
       @master_worksheet << row
-      @selector_worksheets[row[5]] << row unless row[5].nil?
+      unless selector_name(row).nil?
+        row = row_index_for_selector(row, selector_worksheet_length(selector_name(row)))
+        @selector_worksheets[selector_name(row)] << row 
+      end
       index += 1
     end
+  end
+
+  def selector_name(row)
+    row[5]
   end
 
   def prepare_row(title, index)
@@ -131,5 +139,18 @@ class List
     todays_year = Date.today.year - offset
     return todays_year unless todays_month > 6
     today_year + 1
+  end
+
+  def fix_row_index_for_selector(row, index)
+    row.cells[14].sub!(/#{index}/,  )
+  end
+
+  def selector_worksheet_length(name)
+    @selector_worksheets[name].rows.count + 1
+  end
+
+  def row_index_for_selector(row, index)
+    row[14].gsub!(%r{\d+}, "#{index}")
+    row
   end
 end
