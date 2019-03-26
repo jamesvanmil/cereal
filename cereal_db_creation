@@ -1,0 +1,10 @@
+sqlite3 cereal.db <<EOF
+create table stats ( title text, publisher text, platform text, issn text, eissn text, total text);
+.separator ","
+.import stats.csv stats
+create table titles ( id integer primary key, order_number text, title text, issn1 text, issn2 text, online_access text, usage text, format text, fund text, vendor text, acqusition_type, text, split text, fyminus0 text, fyminus1 text,  fyminus2 text,  fyminus3 text,  fyminus4 text );
+create table holdings ( resourcetype text, title text, issn text,eissn text, startdate text, enddate text, resource text, url text);
+.separator ","
+.import holdings.csv holdings
+.quit
+EOF
